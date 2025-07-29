@@ -12,7 +12,9 @@ cron.schedule('0 59 23 * * *', async () => {
         FROM position
     `);
 
-        const cash = 10000; // 这里换成你真实的 cash 查询
+        // 查询 asset 表中最后一条记录的 cash
+        const [assetRows] = await db.query(`SELECT cash FROM asset ORDER BY id DESC LIMIT 1`);
+        const cash = assetRows.length > 0 ? assetRows[0].cash : 0;
         const { stock_value = 0, bond_value = 0, crypto_value = 0 } = rows[0] || {};
 
         await db.query(`
