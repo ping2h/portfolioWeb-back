@@ -7,6 +7,7 @@ import positionRoutes from './src/routes/positionRoutes.js';
 import assetListRoutes from './src/routes/assetListRoutes.js';
 import caashRoute from './src/routes/cashRoutes.js';
 import assetRoutes from './src/routes/assetRoutes.js';
+import trxRoutes from './src/routes/trxRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -63,6 +64,7 @@ app.get('/dashboard', (req, res) => {
 app.use('/position', positionRoutes);
 app.use('/assetList', assetListRoutes);
 app.use('/asset', assetRoutes);
+app.use('/trx', trxRoutes);
 
 
 
