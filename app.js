@@ -9,8 +9,13 @@ import caashRoute from './src/routes/cashRoutes.js';
 import assetRoutes from './src/routes/assetRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
 import './src/schedule/cron.js';
 import assetListService from './src/services/assetListService.js';
+
+
+import './src/schedule/assetUpdate.js';
+import './src/schedule/positionPriceUpdate.js';
 
 
 const app = express();
