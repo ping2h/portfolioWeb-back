@@ -2,7 +2,7 @@
 import express from 'express';
 
 
-import accountRouter from './src/routes/accountRoutes.js';
+
 import positionRoutes from './src/routes/positionRoutes.js';
 import assetListRoutes from './src/routes/assetListRoutes.js';
 import caashRoute from './src/routes/cashRoutes.js';
@@ -17,7 +17,9 @@ const PORT = 3000;
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let __dirname = path.dirname(path.join(__filename));
+
+__dirname = __dirname.replace('portfolioWeb-back', 'portfolioWeb-front');
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,15 +30,14 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+
+console.log(__dirname);
 app.get('/trade', (req, res) => {
   console.log('Request received for root path');
   res.sendFile(path.join(__dirname, 'public', 'trade.html'));
 });
 
-app.get('/account', (req, res) => {
-  console.log('Request received for root path');
-  res.sendFile(path.join(__dirname, 'public', 'account.html'));
-});
+
 
 /*
 app.get('/position', (req, res) => {
@@ -51,7 +52,7 @@ app.get('/dashboard', (req, res) => {
 });
 
 
-app.use('/accounts', accountRouter);
+
 app.use('/position', positionRoutes);
 app.use('/assetList', assetListRoutes);
 
