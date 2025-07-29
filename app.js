@@ -11,7 +11,6 @@ import trxRoutes from './src/routes/trxRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import './src/schedule/cron.js';
 import assetListService from './src/services/assetListService.js';
 
 
