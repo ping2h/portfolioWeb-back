@@ -1,6 +1,16 @@
+let knownAssets = new Map();
+let cached = false;
 
-const knownAssets = new Set();
+const cacheState = {
+    get cached() {
+        return cached;
+    },
+    set cached(val) {
+        cached = val;
+    }
+};
 
-export default knownAssets
+export { cacheState };
+export default knownAssets;
 
 

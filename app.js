@@ -10,6 +10,7 @@ import assetRoutes from './src/routes/assetRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import './src/schedule/cron.js';
+import assetListService from './src/services/assetListService.js';
 
 
 const app = express();
@@ -78,6 +79,10 @@ app.use('/asset', assetRoutes);
 // };
 
 // fetchData();
+
+// cache assetList before starting server
+assetListService.cacheAssetList();
+
 
 app.use('/cash',caashRoute);
 
