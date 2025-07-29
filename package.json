@@ -1,0 +1,27 @@
+{
+  "name": "portfolioweb",
+  "version": "1.0.0",
+  "description": "training prject",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "pingzh",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "express": "^5.1.0",
+    "https-proxy-agent": "^7.0.6",
+    "mysql2": "^3.14.2",
+    "node-cron": "^4.2.1",
+    "prime-number-check": "^1.0.1",
+    "socks-proxy-agent": "^8.0.5",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
