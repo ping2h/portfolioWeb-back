@@ -3,8 +3,8 @@
 // 查询最近 months 个月的总资产
 export const getMonthlyAssets = async (req, res) => {
     try {
-        const months = Number(req.query.months) || 6; // 默认查最近6个月
-        const assets = await assetService.getMonthlyAssets(months);
+        const months = Number(req.params.months);
+        const assets = await assetService.getMonthlyAssets(months-1);
         res.status(200).json(assets);
     } catch (error) {
         res.status(500).json({ error: error.message });
