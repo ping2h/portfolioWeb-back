@@ -16,7 +16,11 @@ import assetListService from './src/services/assetListService.js';
 
 import './src/schedule/assetUpdate.js';
 import './src/schedule/positionPriceUpdate.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { swaggerOptions } from './swagger.js';
 
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 const app = express();
 const PORT = 3000;
@@ -92,7 +96,7 @@ assetListService.cacheAssetList();
 assetListService.cacheIndex();
 
 app.use('/cash',caashRoute);
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
