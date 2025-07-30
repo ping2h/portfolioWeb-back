@@ -19,6 +19,8 @@
     "node-cron": "^4.2.1",
     "prime-number-check": "^1.0.1",
     "socks-proxy-agent": "^8.0.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "yahoo-finance2": "^2.13.3"
   },
   "devDependencies": {
