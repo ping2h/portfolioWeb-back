@@ -27,7 +27,23 @@ const getAssetPriceAndCh = async (req, res) => {
         res.status(500).send(error.message);
     }
 }
+
+const getAssetIndex = async (req, res) => {
+    try {
+        const indexData = await assetListService.getIndex();
+        
+        if (!indexData) {
+            return res.status(404).json({ error: 'Index data not found' });
+        }
+
+        res.status(200).json(indexData);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
 export default {
     getAssetList,
     getAssetPriceAndCh,
+    getAssetIndex,
 };

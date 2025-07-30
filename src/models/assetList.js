@@ -1,16 +1,29 @@
 let knownAssets = new Map();
-let cached = false;
+let indexData = new Set();
+
+
+let cachedAssetList = false;
+let cachedIndex = false;
 
 const cacheState = {
-    get cached() {
-        return cached;
+    get cachedAssetList() {
+        return cachedAssetList;
     },
-    set cached(val) {
-        cached = val;
+    set cachedAssetList(val) {
+        cachedAssetList = val;
     }
 };
 
-export { cacheState };
+const cacheStateIndex = {
+    get cachedIndex() {
+        return cachedIndex;
+    },
+    set cachedIndex(val) {
+        cachedIndex = val;
+    }
+};
+
+export { cacheState, cacheStateIndex, indexData };
 export default knownAssets;
 
 
