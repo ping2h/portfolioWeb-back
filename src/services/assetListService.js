@@ -1,12 +1,12 @@
 import connection from '../db/db.js';
-import knownAssets, { cacheState } from '../models/assetList.js';
+import knownAssets, { cacheState, cacheStateIndex, indexData } from '../models/assetList.js';
 // database connection
 
 
 const token = "d23egtpr01qgiro3c92gd23egtpr01qgiro3c930";
 const getAssetList = async () => {
     try {
-        if (cacheState.cached) { 
+        if (cacheState.cachedAssetList) { 
 
              
 
@@ -14,8 +14,8 @@ const getAssetList = async () => {
             
             const metaArray = Array.from(knownAssets.values()).map(asset => asset.meta);
             // dev
-            // console.log('cached data:', metaArray);
-            // console.log('cached data:', knownAssets.get("meta"));
+            // console.log('cachedAssetList data:', metaArray);
+            // console.log('cachedAssetList data:', knownAssets.get("meta"));
             return metaArray
         } else {
             const [data] = await connection.query('SELECT * FROM assetList');
@@ -103,11 +103,82 @@ const cacheAssetList = async () => {
         });
 
         
-        cacheState.cached = true;
+        cacheState.cachedAssetList = true;
         // dev
-        console.log('Asset list cached successfully');
+        console.log('Asset list cachedAssetList successfully');
     } catch (error) {
         console.error('Error caching asset list:', error.message);
+    }
+};
+
+const getIndex = async () => {
+    try {
+        if (cacheStateIndex.cachedIndex) {
+            console.log('getAssetIndex from cache');    
+            const data = Array.from(indexData);
+            return data;
+        } else {
+            
+            const data = await getIdexLocal();
+            indexData.clear();
+            data.forEach(item => {
+                indexData.add(item);
+            });
+            cacheStateIndex.cachedIndex = true;
+            return data;
+        }
+    } catch (error) {
+        throw new Error('getAssetIndex service ' + error.message);
+    }
+};
+
+
+const getIdexLocal = async () => {
+    try {
+        
+        
+        const nq = await fetch(`https://finnhub.io/api/v1/quote?symbol=QQQ&token=d23egtpr01qgiro3c92gd23egtpr01qgiro3c930`);
+        const dow = await fetch(`https://finnhub.io/api/v1/quote?symbol=DIA&token=d23egtpr01qgiro3c92gd23egtpr01qgiro3c930`);
+        const hs = await fetch(`https://finnhub.io/api/v1/quote?symbol=EWH&token=d23egtpr01qgiro3c92gd23egtpr01qgiro3c930`);
+        
+        const nqData = await nq.json();
+        const dowData = await dow.json();
+        const hsData = await hs.json();
+        
+        return [
+            {
+                symbol: "NASDAQ",
+                price: nqData.c,
+                change: nqData.dp
+            },
+            {
+                symbol: "DOWJONES",
+                price: dowData.c,
+                change: dowData.dp
+            },
+            {
+                symbol: "HANGSENG",
+                price: hsData.c,
+                change: hsData.dp
+            }
+        ];
+    } catch (error) {
+        throw new Error('getIndexLocal service ' + error.message);
+    }
+};
+const cacheIndex = async () => {
+    try {
+        const result = await getIdexLocal();
+        
+        result.forEach(item => {
+            indexData.add(item);
+        });
+
+        cacheStateIndex.cachedIndex = true;
+        // dev
+        console.log('Index cached successfully');
+    } catch (error) {
+        console.error('Error caching index:', error.message);
     }
 };
 
@@ -115,5 +186,8 @@ export default {
     getAssetList,
     getAssetPriceAndCh,
     cacheAssetList,
+    getIndex,
+    cacheIndex,
+
 
 };

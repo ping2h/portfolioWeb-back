@@ -92,7 +92,8 @@ app.use('/trx', trxRoutes);
 
 // cache assetList before starting server
 assetListService.cacheAssetList();
-
+// cache asset index before starting server
+assetListService.cacheIndex();
 
 app.use('/cash',caashRoute);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
