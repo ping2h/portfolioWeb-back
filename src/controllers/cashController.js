@@ -19,3 +19,25 @@ export const getOutcomeByRecentMonths = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+// 存钱
+export const depositCash = async (req, res) => {
+    try {
+        const amount = Number(req.params.amount);
+        const result = await cashService.depositCash(amount);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// 取钱
+export const withdrawCash = async (req, res) => {
+    try {
+        const amount = Number(req.params.amount);
+        const result = await cashService.withdrawCash(amount);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
