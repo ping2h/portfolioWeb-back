@@ -1,4 +1,3 @@
-
 import express from 'express';
 
 
@@ -8,6 +7,7 @@ import assetListRoutes from './src/routes/assetListRoutes.js';
 import caashRoute from './src/routes/cashRoutes.js';
 import assetRoutes from './src/routes/assetRoutes.js';
 import trxRoutes from './src/routes/trxRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -20,10 +20,23 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { swaggerOptions } from './swagger.js';
 
+// login services
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import isAuthenticated from './src/middlewares/authMiddleware.js';
+
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 const app = express();
 const PORT = 3000;
+
+app.use(cookieParser());
+app.use(session({
+    secret: 'your_secret_key',   // 
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // 
+}));
 
 app.use(express.json());
 
@@ -32,18 +45,17 @@ let __dirname = path.dirname(path.join(__filename));
 
 __dirname = __dirname.replace('portfolioWeb-back', 'portfolioWeb-front');
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/', (req, res) => {
-  console.log('Request received for root path');
+
+app.get('/', isAuthenticated, (req, res) => {
+
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 
 console.log(__dirname);
-app.get('/trade', (req, res) => {
+app.get('/trade', isAuthenticated, (req, res) => {
   console.log('Request received for root path');
   res.sendFile(path.join(__dirname, 'public', 'trade.html'));
 });
@@ -57,38 +69,22 @@ app.get('/position', (req, res) => {
 });
 */
 
-app.get('/dashboard', (req, res) => {
-  console.log('Request received for root path');
-  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
-});
 
 
 
-app.use('/position', positionRoutes);
-app.use('/assetList', assetListRoutes);
-app.use('/asset', assetRoutes);
-app.use('/trx', trxRoutes);
+app.use('/position', isAuthenticated,  positionRoutes);
+app.use('/assetList', isAuthenticated, assetListRoutes);
+app.use('/asset', isAuthenticated, assetRoutes);
+app.use('/trx', isAuthenticated,  trxRoutes);
+app.use('/user', userRoutes);
 
 
 
+// Serve static files from the 'public' directory
 
-// test api connection  /////
-/////
+app.use(express.static(path.join(__dirname, 'public')));
 
-// const url = 'https://finnhub.io/api/v1/quote?symbol=BINANCE:BTCUSDT&token=d23egtpr01qgiro3c92gd23egtpr01qgiro3c930';
 
-// const fetchData = async () => {
-//   try {
-//     const res = await fetch(url);
-//     const text = await res.text(); // 百度返回的是 HTML 页面
-//     console.log('成功获取内容：');
-//     console.log(text.slice(0, 500)); // 只打印前500个字符
-//   } catch (error) {
-//     console.error('请求失败:', error.message);
-//   }
-// };
-
-// fetchData();
 
 // cache assetList before starting server
 assetListService.cacheAssetList();
