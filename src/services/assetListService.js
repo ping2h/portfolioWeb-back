@@ -1,5 +1,5 @@
 import connection from '../db/db.js';
-import knownAssets, { cacheState, cacheStateIndex, indexData } from '../models/assetList.js';
+import knownAssets, { cacheState, cacheStateIndex, indexData } from '../cache/assetList.js';
 // database connection
 
 
